@@ -1,11 +1,15 @@
 ﻿#pragma once
 #include "CommonData.h"
+#include "TinyXml2Helper.h"
+#include "DrawCommon.h"
+#include <gdiplus.h>
 
 class CSkinFile
 {
 public:
     CSkinFile();
     ~CSkinFile();
+
 
     //从文件载入皮肤信息
     void Load(const wstring& file_path);
@@ -45,8 +49,8 @@ public:
     {
         int width{};        //宽度
         int height{};       //高度
-        std::map<DisplayItem, LayoutItem> layout_items; //每一项的布局信息
-        LayoutItem GetItem(DisplayItem display_item) const
+        std::map<CommonDisplayItem, LayoutItem> layout_items; //每一项的布局信息
+        LayoutItem GetItem(CommonDisplayItem display_item) const
         {
             auto iter = layout_items.find(display_item);
             if (iter != layout_items.end())
@@ -85,33 +89,51 @@ public:
     const CImage& GetBackgroundL() const { return m_background_l; }
     const CImage& GetBackgroundS() const { return m_background_s; }
 
+    bool IsPNG() const { return m_is_png; }
+    void SetAlpha(int alpha);       //设置主窗口的不透明度，alpha:0~255，仅当使用png背景时有效
+
     //绘制预览图
     //pDC: 绘图的CDC
     //rect: 绘图区域
     void DrawPreview(CDC* pDC, CRect rect);
 
-    //绘制主界面（勾选“显示更多信息”）
-    void DrawInfoL(CDC* pDC, CFont& font);
-
-    //绘制主界面（不勾选“显示更多信息”）
-    void DrawInfoS(CDC* pDC, CFont& font);
+    //绘制主界面
+    void DrawInfo(CDC* pDC, bool show_more_info, CFont& font);
 
     static string GetDisplayItemXmlNodeName(DisplayItem display_item);
-    
+
 private:
     void LoadFromXml(const wstring& file_path);     //从xml文件读取皮肤数据
     void LoadFromIni(const wstring& file_path);     //从ini文件读取皮肤数据（用于兼容旧版皮肤）
 
-    void DrawInfo(CDC* pDC, bool show_more_info, CFont& font);
+    CSkinFile::Layout LayoutFromXmlNode(tinyxml2::XMLElement* ele);
+
+    struct DrawStr
+    {
+        CString label;
+        CString value;
+        CString GetStr() const
+        {
+            return label + value;
+        }
+    };
+
+    static void DrawSkinText(IDrawCommon& drawer, DrawStr draw_str, CRect rect, COLORREF color, Alignment align);
+
+    //绘制主界面中除背景图外所有显示项目
+    void DrawItemsInfo(IDrawCommon& drawer, Layout& layout, CFont& font);
 
 private:
     SkinInfo m_skin_info;
     LayoutInfo m_layout_info;
     PreviewInfo m_preview_info;
+    std::map<std::string, std::string> m_plugin_map;  //插件名称与xml节点名称的映射关系。key是xml节点名称，value是插件ID
 
     CFont m_font;
     CImage m_background_s;
     CImage m_background_l;
-
+    bool m_is_png{};
+    Gdiplus::Image* m_background_png_s{};
+    Gdiplus::Image* m_background_png_l{};
+    int m_alpha{ 255 };     //不透明度，仅当背景为png时有效
 };
-

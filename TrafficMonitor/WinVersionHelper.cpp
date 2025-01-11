@@ -1,5 +1,6 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "WinVersionHelper.h"
+#include "WindowsSettingHelper.h"
 
 
 CWinVersionHelper::CWinVersionHelper()
@@ -23,12 +24,23 @@ CWinVersionHelper::CWinVersionHelper()
 	m_minor_version = dwMinorVer;
 	m_build_number = dwBuildNumber;
 
-	CheckWindows10LightTheme();
+    CWindowsSettingHelper::CheckWindows10LightTheme();
 }
 
 
 CWinVersionHelper::~CWinVersionHelper()
 {
+}
+
+bool CWinVersionHelper::IsWindows11OrLater() const
+{
+	if (m_major_version > 10)
+		return true;
+	else if (m_major_version == 10 && m_minor_version > 0)
+		return true;
+	else if (m_major_version == 10 && m_minor_version == 0 && m_build_number >= 21996)
+		return true;
+	else return false;
 }
 
 bool CWinVersionHelper::IsWindows10FallCreatorOrLater() const
@@ -52,6 +64,19 @@ bool CWinVersionHelper::IsWindows8Or8point1() const
 	return (m_major_version == 6 && m_minor_version > 1);
 }
 
+bool CWinVersionHelper::IsWindows8Point1OrLater() const
+{
+	if (m_major_version > 6)
+    {
+        return true;
+    }
+    else if (m_major_version == 6 && m_minor_version >= 3)
+    {
+        return true;
+    }
+    return false;
+}
+
 bool CWinVersionHelper::IsWindows8OrLater() const
 {
     if (m_major_version > 6)
@@ -64,42 +89,4 @@ bool CWinVersionHelper::IsWindows8OrLater() const
 bool CWinVersionHelper::IsWindows10OrLater() const
 {
     return m_major_version >= 10;
-}
-
-bool CWinVersionHelper::IsWindows10LightTheme() const
-{
-	return m_light_theme;
-}
-
-void CWinVersionHelper::CheckWindows10LightTheme()
-{
-	if (m_major_version >= 10)
-	{
-		HKEY hKey;
-		DWORD dwThemeData(0);
-		LONG lRes = RegOpenKeyExW(HKEY_CURRENT_USER, L"Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize", 0, KEY_READ, &hKey);
-		if (lRes == ERROR_SUCCESS) {
-			GetDWORDRegKeyData(hKey, L"SystemUsesLightTheme", dwThemeData);
-			m_light_theme = (dwThemeData != 0);
-		}
-		else
-		{
-			m_light_theme = false;
-		}
-        RegCloseKey(hKey);
-	}
-	else
-	{
-		m_light_theme = false;
-	}
-}
-
-LONG CWinVersionHelper::GetDWORDRegKeyData(HKEY hKey, const wstring& strValueName, DWORD& dwValueData)
-{
-	DWORD dwBufferSize(sizeof(DWORD));
-	DWORD dwResult(0);
-	LONG lError = ::RegQueryValueExW(hKey, strValueName.c_str(), NULL, NULL, reinterpret_cast<LPBYTE>(&dwResult), &dwBufferSize);
-	if (lError == ERROR_SUCCESS)
-		dwValueData = dwResult;
-	return lError;
 }

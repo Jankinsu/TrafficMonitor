@@ -1,38 +1,39 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include "IniHelper.h"
+#include "TrafficMonitor.h"
 
 
 CIniHelper::CIniHelper(const wstring& file_path)
 {
-	m_file_path = file_path;
-	ifstream file_stream{ file_path };
-	if (file_stream.fail())
-	{
-		return;
-	}
-	//¶ÁÈ¡ÎÄ¼şÄÚÈİ
-	string ini_str;
-	while (!file_stream.eof())
-	{
-		ini_str.push_back(file_stream.get());
-	}
-	ini_str.pop_back();
-	if (!ini_str.empty() && ini_str.back() != L'\n')		//È·±£ÎÄ¼şÄ©Î²ÓĞ»Ø³µ·û
-		ini_str.push_back(L'\n');
-	//ÅĞ¶ÏÎÄ¼şÊÇ·ñÊÇutf8±àÂë
-	bool is_utf8;
-	if (ini_str.size() >= 3 && ini_str[0] == -17 && ini_str[1] == -69 && ini_str[2] == -65)
-	{
-		//Èç¹ûÓĞUTF8µÄBOM£¬ÔòÉ¾³ıBOM
-		is_utf8 = true;
-		ini_str = ini_str.substr(3);
-	}
-	else
-	{
-		is_utf8 = false;
-	}
-	//×ª»»³ÉUnicode
-	m_ini_str = CCommon::StrToUnicode(ini_str.c_str(), is_utf8);
+    m_file_path = file_path;
+    ifstream file_stream{ file_path };
+    if (file_stream.fail())
+    {
+        return;
+    }
+    //è¯»å–æ–‡ä»¶å†…å®¹
+    string ini_str;
+    while (!file_stream.eof())
+    {
+        ini_str.push_back(file_stream.get());
+    }
+    ini_str.pop_back();
+    if (!ini_str.empty() && ini_str.back() != L'\n')        //ç¡®ä¿æ–‡ä»¶æœ«å°¾æœ‰å›è½¦ç¬¦
+        ini_str.push_back(L'\n');
+    //åˆ¤æ–­æ–‡ä»¶æ˜¯å¦æ˜¯utf8ç¼–ç 
+    bool is_utf8;
+    if (ini_str.size() >= 3 && ini_str[0] == -17 && ini_str[1] == -69 && ini_str[2] == -65)
+    {
+        //å¦‚æœæœ‰UTF8çš„BOMï¼Œåˆ™åˆ é™¤BOM
+        is_utf8 = true;
+        ini_str = ini_str.substr(3);
+    }
+    else
+    {
+        is_utf8 = false;
+    }
+    //è½¬æ¢æˆUnicode
+    m_ini_str = CCommon::StrToUnicode(ini_str.c_str(), is_utf8);
 }
 
 
@@ -42,82 +43,78 @@ CIniHelper::~CIniHelper()
 
 void CIniHelper::SetSaveAsUTF8(bool utf8)
 {
-	m_save_as_utf8 = utf8;
+    m_save_as_utf8 = utf8;
 }
 
 void CIniHelper::WriteString(const wchar_t * AppName, const wchar_t * KeyName, const wstring& str)
 {
-	wstring write_str{ str };
-	if (!write_str.empty() && (write_str[0] == L' ' || write_str.back() == L' '))		//Èç¹û×Ö·û´®Ç°ºóº¬ÓĞ¿Õ¸ñ£¬ÔòÔÚ×Ö·û´®Ç°ºóÌí¼ÓÒıºÅ
-	{
-		write_str = DEF_CH + write_str;
-		write_str.push_back(DEF_CH);
-	}
-	_WriteString(AppName, KeyName, write_str);
+    wstring write_str{ str };
+    if (!write_str.empty() && (write_str[0] == L' ' || write_str.back() == L' '))       //å¦‚æœå­—ç¬¦ä¸²å‰åå«æœ‰ç©ºæ ¼ï¼Œåˆ™åœ¨å­—ç¬¦ä¸²å‰åæ·»åŠ å¼•å·
+    {
+        write_str = DEF_CH + write_str;
+        write_str.push_back(DEF_CH);
+    }
+    _WriteString(AppName, KeyName, write_str);
 }
 
 wstring CIniHelper::GetString(const wchar_t * AppName, const wchar_t * KeyName, const wchar_t* default_str) const
 {
-	wstring rtn{_GetString(AppName, KeyName, default_str)};
-	//Èç¹û¶ÁÈ¡µÄ×Ö·û´®Ç°ºóÓĞÖ¸¶¨µÄ×Ö·û£¬ÔòÉ¾³ıËü
-	if (!rtn.empty() && (rtn.front() == L'$' || rtn.front() == DEF_CH))
-		rtn = rtn.substr(1);
-	if (!rtn.empty() && (rtn.back() == L'$' || rtn.back() == DEF_CH))
-		rtn.pop_back();
-	return rtn;
+    wstring rtn{_GetString(AppName, KeyName, default_str)};
+    //å¦‚æœè¯»å–çš„å­—ç¬¦ä¸²å‰åæœ‰æŒ‡å®šçš„å­—ç¬¦ï¼Œåˆ™åˆ é™¤å®ƒ
+    if (!rtn.empty() && (rtn.front() == L'$' || rtn.front() == DEF_CH))
+        rtn = rtn.substr(1);
+    if (!rtn.empty() && (rtn.back() == L'$' || rtn.back() == DEF_CH))
+        rtn.pop_back();
+    return rtn;
 }
 
 void CIniHelper::WriteInt(const wchar_t * AppName, const wchar_t * KeyName, int value)
 {
-	wchar_t buff[16]{};
-	_itow_s(value, buff, 10);
-	_WriteString(AppName, KeyName, wstring(buff));
+    _WriteString(AppName, KeyName, std::to_wstring(value));
 }
 
 int CIniHelper::GetInt(const wchar_t * AppName, const wchar_t * KeyName, int default_value) const
 {
-	wchar_t default_str_buff[16]{};
-	_itow_s(default_value, default_str_buff, 10);
-	wstring rtn{ _GetString(AppName, KeyName, default_str_buff) };
-	return _ttoi(rtn.c_str());
+    wstring rtn{ _GetString(AppName, KeyName, std::to_wstring(default_value).c_str()) };
+    return _ttoi(rtn.c_str());
 }
 
 void CIniHelper::WriteBool(const wchar_t * AppName, const wchar_t * KeyName, bool value)
 {
-	if(value)
-		_WriteString(AppName, KeyName, wstring(L"true"));
-	else
-		_WriteString(AppName, KeyName, wstring(L"false"));
+    if(value)
+        _WriteString(AppName, KeyName, wstring(L"true"));
+    else
+        _WriteString(AppName, KeyName, wstring(L"false"));
 }
 
 bool CIniHelper::GetBool(const wchar_t * AppName, const wchar_t * KeyName, bool default_value) const
 {
-	wstring rtn{ _GetString(AppName, KeyName, (default_value ? L"true" : L"false")) };
-	if (rtn == L"true")
-		return true;
-	else if (rtn == L"false")
-		return false;
-	else
-		return (_ttoi(rtn.c_str()) != 0);
+    wstring rtn{ _GetString(AppName, KeyName, (default_value ? L"true" : L"false")) };
+    if (rtn == L"true")
+        return true;
+    else if (rtn == L"false")
+        return false;
+    else
+        return (_ttoi(rtn.c_str()) != 0);
 }
 
 void CIniHelper::WriteIntArray(const wchar_t * AppName, const wchar_t * KeyName, const int * values, int size)
 {
-	CString str, tmp;
-	for (int i{}; i < size; i++)
-	{
-		tmp.Format(_T("%d,"), values[i]);
-		str += tmp;
-	}
-	_WriteString(AppName, KeyName, wstring(str));
+    CString str, tmp;
+    for (int i{}; i < size; i++)
+    {
+        tmp.Format(_T("%d,"), values[i]);
+        str += tmp;
+    }
+    _WriteString(AppName, KeyName, wstring(str));
 }
 
 void CIniHelper::GetIntArray(const wchar_t * AppName, const wchar_t * KeyName, int * values, int size, int default_value) const
 {
-	CString default_str;
-	default_str.Format(_T("%d"), default_value);
-	wstring str;
-	str = _GetString(AppName, KeyName, default_str);
+    CString default_str;
+    default_str.Format(_T("%d"), default_value);
+    wstring str;
+    str = _GetString(AppName, KeyName, default_str);
     std::vector<wstring> split_result;
     CCommon::StringSplit(str, L',', split_result);
     for (int i = 0; i < size; i++)
@@ -133,68 +130,81 @@ void CIniHelper::GetIntArray(const wchar_t * AppName, const wchar_t * KeyName, i
 
 void CIniHelper::WriteBoolArray(const wchar_t * AppName, const wchar_t * KeyName, const bool * values, int size)
 {
-	int value{};
-	for (int i{}; i < size; i++)
-	{
-		if (values[i])
-			value |= (1 << i);
-	}
-	return WriteInt(AppName, KeyName, value);
+    int value{};
+    for (int i{}; i < size; i++)
+    {
+        if (values[i])
+            value |= (1 << i);
+    }
+    return WriteInt(AppName, KeyName, value);
 }
 
 void CIniHelper::GetBoolArray(const wchar_t * AppName, const wchar_t * KeyName, bool * values, int size, bool default_value) const
 {
-	int value = GetInt(AppName, KeyName, 0);
-	for (int i{}; i < size; i++)
-	{
-		values[i] = ((value >> i) % 2 != 0);
-	}
+    int value = GetInt(AppName, KeyName, 0);
+    for (int i{}; i < size; i++)
+    {
+        values[i] = ((value >> i) % 2 != 0);
+    }
+}
+
+void CIniHelper::WriteStringList(const wchar_t* AppName, const wchar_t* KeyName, const vector<wstring>& values)
+{
+    wstring str_write = MergeStringList(values);
+    _WriteString(AppName, KeyName, str_write);
+}
+
+void CIniHelper::GetStringList(const wchar_t* AppName, const wchar_t* KeyName, vector<wstring>& values, const vector<wstring>& default_value) const
+{
+    wstring default_str = MergeStringList(default_value);
+    wstring str_value = _GetString(AppName, KeyName, default_str.c_str());
+    SplitStringList(values, str_value);
 }
 
 void CIniHelper::SaveFontData(const wchar_t * AppName, const FontInfo & font)
 {
-	WriteString(AppName, L"font_name", wstring(font.name));
-	WriteInt(AppName, L"font_size", font.size);
-	bool style[4];
-	style[0] = font.bold;
-	style[1] = font.italic;
-	style[2] = font.underline;
-	style[3] = font.strike_out;
-	WriteBoolArray(AppName, L"font_style", style, 4);
+    WriteString(AppName, L"font_name", wstring(font.name));
+    WriteInt(AppName, L"font_size", font.size);
+    bool style[4];
+    style[0] = font.bold;
+    style[1] = font.italic;
+    style[2] = font.underline;
+    style[3] = font.strike_out;
+    WriteBoolArray(AppName, L"font_style", style, 4);
 }
 
 bool CIniHelper::Save()
 {
-	ofstream file_stream{ m_file_path };
-	if(file_stream.fail())
-		return false;
-	string ini_str{ CCommon::UnicodeToStr(m_ini_str.c_str(), m_save_as_utf8) };
-	if (m_save_as_utf8)		//Èç¹ûÒÔUTF8±àÂë±£´æ£¬ÏÈ²åÈëBOM
-	{
-		string utf8_bom;
-		utf8_bom.push_back(-17);
-		utf8_bom.push_back(-69);
-		utf8_bom.push_back(-65);
-		file_stream << utf8_bom;
-	}
+    ofstream file_stream{ m_file_path };
+    if(file_stream.fail())
+        return false;
+    string ini_str{ CCommon::UnicodeToStr(m_ini_str.c_str(), m_save_as_utf8) };
+    if (m_save_as_utf8)     //å¦‚æœä»¥UTF8ç¼–ç ä¿å­˜ï¼Œå…ˆæ’å…¥BOM
+    {
+        string utf8_bom;
+        utf8_bom.push_back(-17);
+        utf8_bom.push_back(-69);
+        utf8_bom.push_back(-65);
+        file_stream << utf8_bom;
+    }
 
-	file_stream << ini_str;
-	return true;
+    file_stream << ini_str;
+    return true;
 }
 
 void CIniHelper::LoadFontData(const wchar_t * AppName, FontInfo & font, const FontInfo& default_font) const
 {
-	font.name = GetString(AppName, L"font_name", default_font.name).c_str();
-	font.size = GetInt(AppName, L"font_size", default_font.size);
-	bool style[4];
-	GetBoolArray(AppName, L"font_style", style, 4);
-	font.bold = style[0];
-	font.italic = style[1];
-	font.underline = style[2];
-	font.strike_out = style[3];
+    font.name = GetString(AppName, L"font_name", default_font.name).c_str();
+    font.size = GetInt(AppName, L"font_size", default_font.size);
+    bool style[4];
+    GetBoolArray(AppName, L"font_style", style, 4);
+    font.bold = style[0];
+    font.italic = style[1];
+    font.underline = style[2];
+    font.strike_out = style[3];
 }
 
-void CIniHelper::LoadMainWndColors(const wchar_t * AppName, const wchar_t * KeyName, std::map<DisplayItem, COLORREF>& text_colors, COLORREF default_color)
+void CIniHelper::LoadMainWndColors(const wchar_t * AppName, const wchar_t * KeyName, std::map<CommonDisplayItem, COLORREF>& text_colors, COLORREF default_color)
 {
     CString default_str;
     default_str.Format(_T("%d"), default_color);
@@ -202,18 +212,20 @@ void CIniHelper::LoadMainWndColors(const wchar_t * AppName, const wchar_t * KeyN
     str = _GetString(AppName, KeyName, default_str);
     std::vector<wstring> split_result;
     CCommon::StringSplit(str, L',', split_result);
-    int index = 0;
-    for (auto iter = AllDisplayItems.begin(); iter != AllDisplayItems.end(); ++iter)
+    size_t index = 0;
+    for (auto iter = theApp.m_plugins.AllDisplayItemsWithPlugins().begin(); iter != theApp.m_plugins.AllDisplayItemsWithPlugins().end(); ++iter)
     {
-        if (index < static_cast<int>(split_result.size()))
-        {
+        if (index < split_result.size())
             text_colors[*iter] = _wtoi(split_result[index].c_str());
-        }
+        else if (!split_result.empty())
+            text_colors[*iter] = _wtoi(split_result[0].c_str());
+        else
+            text_colors[*iter] = default_color;
         index++;
     }
 }
 
-void CIniHelper::SaveMainWndColors(const wchar_t * AppName, const wchar_t * KeyName, const std::map<DisplayItem, COLORREF>& text_colors)
+void CIniHelper::SaveMainWndColors(const wchar_t * AppName, const wchar_t * KeyName, const std::map<CommonDisplayItem, COLORREF>& text_colors)
 {
     CString str;
     for (auto iter = text_colors.begin(); iter != text_colors.end(); ++iter)
@@ -226,7 +238,7 @@ void CIniHelper::SaveMainWndColors(const wchar_t * AppName, const wchar_t * KeyN
 
 }
 
-void CIniHelper::LoadTaskbarWndColors(const wchar_t * AppName, const wchar_t * KeyName, std::map<DisplayItem, TaskbarItemColor>& text_colors, COLORREF default_color)
+void CIniHelper::LoadTaskbarWndColors(const wchar_t * AppName, const wchar_t * KeyName, std::map<CommonDisplayItem, TaskbarItemColor>& text_colors, COLORREF default_color)
 {
     CString default_str;
     default_str.Format(_T("%d"), default_color);
@@ -234,20 +246,28 @@ void CIniHelper::LoadTaskbarWndColors(const wchar_t * AppName, const wchar_t * K
     str = _GetString(AppName, KeyName, default_str);
     std::vector<wstring> split_result;
     CCommon::StringSplit(str, L',', split_result);
-    int index = 0;
-    for (auto iter = AllDisplayItems.begin(); iter != AllDisplayItems.end(); ++iter)
+    size_t index = 0;
+    for (auto iter = theApp.m_plugins.AllDisplayItemsWithPlugins().begin(); iter != theApp.m_plugins.AllDisplayItemsWithPlugins().end(); ++iter)
     {
-        if (index + 1 < static_cast<int>(split_result.size()))
-        {
+        if (index < split_result.size())
             text_colors[*iter].label = _wtoi(split_result[index].c_str());
+        else if (!split_result.empty())
+            text_colors[*iter].label = _wtoi(split_result[0].c_str());
+        else
+            text_colors[*iter].label = default_color;
+
+        if (index + 1 < split_result.size())
             text_colors[*iter].value = _wtoi(split_result[index + 1].c_str());
-        }
+        else if (split_result.size() > 1)
+            text_colors[*iter].value = _wtoi(split_result[1].c_str());
+        else
+            text_colors[*iter].value = default_color;
         index += 2;
     }
 
 }
 
-void CIniHelper::SaveTaskbarWndColors(const wchar_t * AppName, const wchar_t * KeyName, const std::map<DisplayItem, TaskbarItemColor>& text_colors)
+void CIniHelper::SaveTaskbarWndColors(const wchar_t * AppName, const wchar_t * KeyName, const std::map<CommonDisplayItem, TaskbarItemColor>& text_colors)
 {
     CString str;
     for (auto iter = text_colors.begin(); iter != text_colors.end(); ++iter)
@@ -259,95 +279,147 @@ void CIniHelper::SaveTaskbarWndColors(const wchar_t * AppName, const wchar_t * K
     _WriteString(AppName, KeyName, wstring(str));
 }
 
+void CIniHelper::LoadPluginDisplayStr(bool is_main_window)
+{
+    DispStrings& disp_str{ is_main_window ? theApp.m_main_wnd_data.disp_str : theApp.m_taskbar_data.disp_str };
+    std::wstring app_name{ is_main_window ? L"plugin_display_str_main_window" : L"plugin_display_str_taskbar_window" };
+    for (const auto& plugin : theApp.m_plugins.GetPluginItems())
+    {
+        disp_str.Load(plugin->GetItemId(), GetString(app_name.c_str(), plugin->GetItemId(), plugin->GetItemLableText()));
+    }
+}
+
+void CIniHelper::SavePluginDisplayStr(bool is_main_window)
+{
+    DispStrings& disp_str{ is_main_window ? theApp.m_main_wnd_data.disp_str : theApp.m_taskbar_data.disp_str };
+    std::wstring app_name{ is_main_window ? L"plugin_display_str_main_window" : L"plugin_display_str_taskbar_window" };
+    for (const auto& plugin : theApp.m_plugins.GetPluginItems())
+    {
+        WriteString(app_name.c_str(), plugin->GetItemId(), disp_str.Get(plugin));
+    }
+}
+
 void CIniHelper::_WriteString(const wchar_t * AppName, const wchar_t * KeyName, const wstring & str)
 {
-	wstring app_str{ L"[" };
-	app_str.append(AppName).append(L"]");
-	size_t app_pos{}, app_end_pos, key_pos;
-	app_pos = m_ini_str.find(app_str);
-	if (app_pos == wstring::npos)		//ÕÒ²»µ½AppName£¬ÔòÔÚ×îºóÃæÌí¼Ó
-	{
-		if (!m_ini_str.empty() && m_ini_str.back() != L'\n')
-			m_ini_str += L"\n";
-		app_pos = m_ini_str.size();
-		m_ini_str += app_str;
-		m_ini_str += L"\n";
-	}
-	app_end_pos = m_ini_str.find(L"\n[", app_pos + 2);
-	if (app_end_pos != wstring::npos)
-		app_end_pos++;
+    wstring app_str{ L"[" };
+    app_str.append(AppName).append(L"]");
+    size_t app_pos{}, app_end_pos, key_pos;
+    app_pos = m_ini_str.find(app_str);
+    if (app_pos == wstring::npos)       //æ‰¾ä¸åˆ°AppNameï¼Œåˆ™åœ¨æœ€åé¢æ·»åŠ 
+    {
+        if (!m_ini_str.empty() && m_ini_str.back() != L'\n')
+            m_ini_str += L"\n";
+        app_pos = m_ini_str.size();
+        m_ini_str += app_str;
+        m_ini_str += L"\n";
+    }
+    app_end_pos = m_ini_str.find(L"\n[", app_pos + 2);
+    if (app_end_pos != wstring::npos)
+        app_end_pos++;
 
-	key_pos = m_ini_str.find(wstring(L"\n") + KeyName + L' ', app_pos);		//²éÕÒ¡°\nkey_name ¡±
-	if (key_pos >= app_end_pos)		//Èç¹ûÕÒ²»µ½¡°\nkey_name ¡±£¬Ôò²éÕÒ¡°\nkey_name=¡±
-		key_pos = m_ini_str.find(wstring(L"\n") + KeyName + L'=', app_pos);
-	if (key_pos >= app_end_pos)				//ÕÒ²»µ½KeyName£¬Ôò²åÈëÒ»¸ö
-	{
-		wchar_t buff[256];
-		swprintf_s(buff, L"%s = %s\n", KeyName, str.c_str());
-		if (app_end_pos == wstring::npos)
-			m_ini_str += buff;
-		else
-			m_ini_str.insert(app_end_pos, buff);
-	}
-	else	//ÕÒµ½ÁËKeyName£¬½«µÈºÅµ½»»ĞĞ·ûÖ®¼äµÄÎÄ±¾Ìæ»»
-	{
-		size_t str_pos;
-		str_pos = m_ini_str.find(L'=', key_pos + 2);
-		size_t line_end_pos = m_ini_str.find(L'\n', key_pos + 2);
-		if (str_pos > line_end_pos)	//ËùÔÚĞĞÃ»ÓĞµÈºÅ£¬Ôò²åÈëÒ»¸öµÈºÅ
-		{
-			m_ini_str.insert(key_pos + wcslen(KeyName) + 1, L" =");
-			str_pos = key_pos + wcslen(KeyName) + 2;
-		}
-		else
-		{
-			str_pos++;
-		}
-		size_t str_end_pos;
-		str_end_pos = m_ini_str.find(L"\n", str_pos);
-		m_ini_str.replace(str_pos, str_end_pos - str_pos, L" " + str);
-	}
+    key_pos = m_ini_str.find(wstring(L"\n") + KeyName + L' ', app_pos);     //æŸ¥æ‰¾â€œ\nkey_name â€
+    if (key_pos >= app_end_pos)     //å¦‚æœæ‰¾ä¸åˆ°â€œ\nkey_name â€ï¼Œåˆ™æŸ¥æ‰¾â€œ\nkey_name=â€
+        key_pos = m_ini_str.find(wstring(L"\n") + KeyName + L'=', app_pos);
+    if (key_pos >= app_end_pos)             //æ‰¾ä¸åˆ°KeyNameï¼Œåˆ™æ’å…¥ä¸€ä¸ª
+    {
+        //wchar_t buff[256];
+        //swprintf_s(buff, L"%s = %s\n", KeyName, str.c_str());
+        std::wstring str_temp = KeyName;
+        str_temp += L" = ";
+        str_temp += str;
+        str_temp += L"\n";
+        if (app_end_pos == wstring::npos)
+            m_ini_str += str_temp;
+        else
+            m_ini_str.insert(app_end_pos, str_temp);
+    }
+    else    //æ‰¾åˆ°äº†KeyNameï¼Œå°†ç­‰å·åˆ°æ¢è¡Œç¬¦ä¹‹é—´çš„æ–‡æœ¬æ›¿æ¢
+    {
+        size_t str_pos;
+        str_pos = m_ini_str.find(L'=', key_pos + 2);
+        size_t line_end_pos = m_ini_str.find(L'\n', key_pos + 2);
+        if (str_pos > line_end_pos) //æ‰€åœ¨è¡Œæ²¡æœ‰ç­‰å·ï¼Œåˆ™æ’å…¥ä¸€ä¸ªç­‰å·
+        {
+            m_ini_str.insert(key_pos + wcslen(KeyName) + 1, L" =");
+            str_pos = key_pos + wcslen(KeyName) + 2;
+        }
+        else
+        {
+            str_pos++;
+        }
+        size_t str_end_pos;
+        str_end_pos = m_ini_str.find(L"\n", str_pos);
+        m_ini_str.replace(str_pos, str_end_pos - str_pos, L" " + str);
+    }
 }
 
 wstring CIniHelper::_GetString(const wchar_t * AppName, const wchar_t * KeyName, const wchar_t* default_str) const
 {
-	wstring app_str{ L"[" };
-	app_str.append(AppName).append(L"]");
-	size_t app_pos{}, app_end_pos, key_pos;
-	app_pos = m_ini_str.find(app_str);
-	if (app_pos == wstring::npos)		//ÕÒ²»µ½AppName£¬·µ»ØÄ¬ÈÏ×Ö·û´®
-		return default_str;
+    wstring app_str{ L"[" };
+    app_str.append(AppName).append(L"]");
+    size_t app_pos{}, app_end_pos, key_pos;
+    app_pos = m_ini_str.find(app_str);
+    if (app_pos == wstring::npos)       //æ‰¾ä¸åˆ°AppNameï¼Œè¿”å›é»˜è®¤å­—ç¬¦ä¸²
+        return default_str;
 
-	app_end_pos = m_ini_str.find(L"\n[", app_pos + 2);
-	if (app_end_pos != wstring::npos)
-		app_end_pos++;
+    app_end_pos = m_ini_str.find(L"\n[", app_pos + 2);
+    if (app_end_pos != wstring::npos)
+        app_end_pos++;
 
-	key_pos = m_ini_str.find(wstring(L"\n") + KeyName + L' ', app_pos);		//²éÕÒ¡°\nkey_name ¡±
-	if (key_pos >= app_end_pos)		//Èç¹ûÕÒ²»µ½¡°\nkey_name ¡±£¬Ôò²éÕÒ¡°\nkey_name=¡±
-		key_pos = m_ini_str.find(wstring(L"\n") + KeyName + L'=', app_pos);
-	if (key_pos >= app_end_pos)				//ÕÒ²»µ½KeyName£¬·µ»ØÄ¬ÈÏ×Ö·û´®
-	{
-		return default_str;
-	}
-	else	//ÕÒµ½ÁËKeyName£¬»ñÈ¡µÈºÅµ½»»ĞĞ·ûÖ®¼äµÄÎÄ±¾
-	{
-		size_t str_pos;
-		str_pos = m_ini_str.find(L'=', key_pos + 2);
-		size_t line_end_pos = m_ini_str.find(L'\n', key_pos + 2);
-		if (str_pos > line_end_pos)	//ËùÔÚĞĞÃ»ÓĞµÈºÅ£¬·µ»ØÄ¬ÈÏ×Ö·û´®
-		{
-			return default_str;
-		}
-		else
-		{
-			str_pos++;
-		}
-		size_t str_end_pos;
-		str_end_pos = m_ini_str.find(L"\n", str_pos);
-		//»ñÈ¡ÎÄ±¾
-		wstring return_str{ m_ini_str.substr(str_pos, str_end_pos - str_pos) };
-		//Èç¹ûÇ°ºóÓĞ¿Õ¸ñ£¬Ôò½«ÆäÉ¾³ı
-		CCommon::StringNormalize(return_str);
-		return return_str;
-	}
+    key_pos = m_ini_str.find(wstring(L"\n") + KeyName + L' ', app_pos);     //æŸ¥æ‰¾â€œ\nkey_name â€
+    if (key_pos >= app_end_pos)     //å¦‚æœæ‰¾ä¸åˆ°â€œ\nkey_name â€ï¼Œåˆ™æŸ¥æ‰¾â€œ\nkey_name=â€
+        key_pos = m_ini_str.find(wstring(L"\n") + KeyName + L'=', app_pos);
+    if (key_pos >= app_end_pos)             //æ‰¾ä¸åˆ°KeyNameï¼Œè¿”å›é»˜è®¤å­—ç¬¦ä¸²
+    {
+        return default_str;
+    }
+    else    //æ‰¾åˆ°äº†KeyNameï¼Œè·å–ç­‰å·åˆ°æ¢è¡Œç¬¦ä¹‹é—´çš„æ–‡æœ¬
+    {
+        size_t str_pos;
+        str_pos = m_ini_str.find(L'=', key_pos + 2);
+        size_t line_end_pos = m_ini_str.find(L'\n', key_pos + 2);
+        if (str_pos > line_end_pos) //æ‰€åœ¨è¡Œæ²¡æœ‰ç­‰å·ï¼Œè¿”å›é»˜è®¤å­—ç¬¦ä¸²
+        {
+            return default_str;
+        }
+        else
+        {
+            str_pos++;
+        }
+        size_t str_end_pos;
+        str_end_pos = m_ini_str.find(L"\n", str_pos);
+        //è·å–æ–‡æœ¬
+        wstring return_str{ m_ini_str.substr(str_pos, str_end_pos - str_pos) };
+        //å¦‚æœå‰åæœ‰ç©ºæ ¼ï¼Œåˆ™å°†å…¶åˆ é™¤
+        CCommon::StringNormalize(return_str);
+        return return_str;
+    }
+}
+
+wstring CIniHelper::MergeStringList(const vector<wstring>& values)
+{
+    wstring str_merge;
+    int index = 0;
+    //åœ¨æ¯ä¸ªå­—ç¬¦ä¸²å‰ååŠ ä¸Šå¼•å·ï¼Œå†å°†å®ƒä»¬ç”¨é€—å·è¿æ¥èµ·æ¥
+    for (const wstring& str : values)
+    {
+        if (index > 0)
+            str_merge.push_back(L',');
+        str_merge.push_back(L'\"');
+        str_merge += str;
+        str_merge.push_back(L'\"');
+        index++;
+    }
+    return str_merge;
+}
+
+void CIniHelper::SplitStringList(vector<wstring>& values, wstring str_value)
+{
+    CCommon::StringSplit(str_value, wstring(L"\",\""), values);
+    if (!values.empty())
+    {
+        //ç»“æœä¸­ç¬¬ä¸€é¡¹å‰é¢å’Œæœ€åä¸€é¡¹çš„åé¢å„è¿˜æœ‰ä¸€ä¸ªå¼•å·ï¼Œå°†å®ƒä»¬åˆ é™¤
+        values.front() = values.front().substr(1);
+        values.back().pop_back();
+    }
 }

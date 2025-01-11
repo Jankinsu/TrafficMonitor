@@ -1,15 +1,15 @@
-#pragma once
+ï»¿#pragma once
 #include "CommonData.h"
 
-#define TASKBAR_DEFAULT_STYLE_NUM 3
-#define TASKBAR_DEFAULT_LIGHT_STYLE_INDEX (-1)
+#define TASKBAR_DEFAULT_STYLE_NUM 4
+#define TASKBAR_DEFAULT_LIGHT_STYLE_INDEX 3
 
 class CTaskbarDefaultStyle
 {
 public:
 	struct TaskBarStyleData
 	{
-        std::map<DisplayItem, TaskbarItemColor> text_colors{};
+        std::map<CommonDisplayItem, TaskbarItemColor> text_colors{};
 		COLORREF back_color{};
 		COLORREF transparent_color{};
 		COLORREF status_bar_color{};
@@ -22,17 +22,13 @@ public:
 	void LoadConfig();
 	void SaveConfig() const;
 
-	void ApplyDefaultStyle(int index, TaskBarSettingData& data) const;		//Ó¦ÓÃÒ»¸öÑÕÉ«Ô¤Éè
-	static void ApplyDefaultLightStyle(TaskBarSettingData& data);		//Ó¦ÓÃÄ¬ÈÏµÄÇ³É«Ä£Ê½Ô¤Éè
-	void ModifyDefaultStyle(int index, TaskBarSettingData& data);     //½«µ±Ç°ÑÕÉ«ÉèÖÃ±£´æµ½Ò»¸öÔ¤Éè·½°¸
+	void ApplyDefaultStyle(int index, TaskBarSettingData& data) const;		//åº”ç”¨ä¸€ä¸ªé¢œè‰²é¢„è®¾
+	//static void ApplyDefaultLightStyle(TaskBarSettingData& data);		//åº”ç”¨é»˜è®¤çš„æµ…è‰²æ¨¡å¼é¢„è®¾
+	void ModifyDefaultStyle(int index, TaskBarSettingData& data);     //å°†å½“å‰é¢œè‰²è®¾ç½®ä¿å­˜åˆ°ä¸€ä¸ªé¢„è®¾æ–¹æ¡ˆ
 
-	static bool IsTaskbarTransparent(const TaskBarSettingData& data);
-	static void SetTaskabrTransparent(bool transparent, TaskBarSettingData& data);
-
-    static bool IsTaskBarStyleDataValid(const TaskBarStyleData& data);     //ÅĞ¶ÏÒ»¸öÑÕÉ«Ä£Ê½ÊÇ·ñÓĞĞ§
+    static bool IsTaskBarStyleDataValid(const TaskBarStyleData& data);     //åˆ¤æ–­ä¸€ä¸ªé¢œè‰²æ¨¡å¼æ˜¯å¦æœ‰æ•ˆ
 
 private:
-	TaskBarStyleData m_default_style[TASKBAR_DEFAULT_STYLE_NUM];    //Ô¤ÉèÑùÊ½
+	TaskBarStyleData m_default_style[TASKBAR_DEFAULT_STYLE_NUM];    //é¢„è®¾æ ·å¼
 
 };
-

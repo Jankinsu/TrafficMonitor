@@ -163,13 +163,79 @@
     <Filter Include="源文件和头文件\派生的控件类\CComboBox2">
       <UniqueIdentifier>{abe84b35-de18-4853-9545-65354fb3d22f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="源文件和头文件\公共的类\HighResolutionTimer">
+      <UniqueIdentifier>{c164ccd7-eb7c-465c-8828-d7a38eab573c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件和头文件\公共的类\tinyxml2">
+      <UniqueIdentifier>{24b802e1-bc90-4f4c-8862-0ba6310f05f1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件和头文件\公共的类\TaskbarItemOrderHelper">
+      <UniqueIdentifier>{22cfb8c5-2d79-4f91-add4-fb393e20475e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件和头文件\对话框类\选项设置对话框\SetItemOrderDlg">
+      <UniqueIdentifier>{bc164584-be21-4a91-9af5-772d61ed9529}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件和头文件\公共的类\PluginManager">
+      <UniqueIdentifier>{f7dd3288-085a-4de2-9f83-d8ba2f3eff47}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件和头文件\对话框类\PluginManagerDlg">
+      <UniqueIdentifier>{dbacfb68-1e03-4bcb-a08b-e87ba558985f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件和头文件\公共的类\CommonData">
+      <UniqueIdentifier>{554c1c22-3662-416f-9a24-ad76bfb5eecd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件和头文件\对话框类\AppAlreadyRuningDlg">
+      <UniqueIdentifier>{cecf73f6-6479-4ce2-aefe-879c9363ab24}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件和头文件\对话框类\选项设置对话框\SelectConnectionsDlg">
+      <UniqueIdentifier>{8a6deeaa-91ab-4c85-b293-ab1844f3ef82}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件和头文件\公共的类\WindowsSettingHelper">
+      <UniqueIdentifier>{46dd548a-c66e-4a37-8767-6f9767125287}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件和头文件\公共的类\DllFunctions">
+      <UniqueIdentifier>{a106d99c-80bb-4625-a64e-9d1ea24cad7c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件和头文件\公共的类\Nullable">
+      <UniqueIdentifier>{f51d70bc-ec1d-45e9-9c57-777da2b6e51d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件和头文件\公共的类\DrawTextManager">
+      <UniqueIdentifier>{af0ec00c-027f-4003-890e-7122d0b8df0c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件和头文件\公共的类\HResultException">
+      <UniqueIdentifier>{48a72bdd-aca1-4367-9907-4bbb92dea212}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件和头文件\公共的类\Image2DEffect">
+      <UniqueIdentifier>{b6684af7-c43e-42f7-9094-9315af53951d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件和头文件\公共的类\RenderAPISupport">
+      <UniqueIdentifier>{9e68f549-1373-437f-89f9-0b976150aa99}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件和头文件\公共的类\RenderAPISupport\D2D1Support">
+      <UniqueIdentifier>{9b93962c-26e9-41d5-a5e3-7dfd90bc5e96}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件和头文件\公共的类\RenderAPISupport\D3D10Support1">
+      <UniqueIdentifier>{f6a75faf-64b5-4f3b-a382-7dfd4a17d61c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件和头文件\公共的类\RenderAPISupport\DCompositionSupport">
+      <UniqueIdentifier>{9d71c24a-4df2-4df5-a536-741d890ada1b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件和头文件\公共的类\RenderAPISupport\DxgiSupport2">
+      <UniqueIdentifier>{059ab3fb-f8b3-4cae-b5d3-72bd857e5197}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件和头文件\公共的类\WindowsWebExperienceDetector">
+      <UniqueIdentifier>{4f233c31-4fef-48c1-8176-845ddd21debb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
     <Text Include="res\Acknowledgement.txt">
       <Filter>资源文件</Filter>
     </Text>
-    <Text Include="res\Acknowledgement_en.txt" />
+    <Text Include="compile_time.txt" />
+    <Text Include="res\Acknowledgement_en.txt">
+      <Filter>资源文件</Filter>
+    </Text>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="targetver.h">
@@ -222,9 +288,6 @@
     </ClInclude>
     <ClInclude Include="PictureStatic.h">
       <Filter>源文件和头文件\派生的控件类\PictureStatic</Filter>
-    </ClInclude>
-    <ClInclude Include="CommonData.h">
-      <Filter>源文件和头文件\头文件</Filter>
     </ClInclude>
     <ClInclude Include="CSkinPreviewView.h">
       <Filter>源文件和头文件\对话框类\SkinDlg</Filter>
@@ -345,6 +408,87 @@
     </ClInclude>
     <ClInclude Include="ComboBox2.h">
       <Filter>源文件和头文件\派生的控件类\CComboBox2</Filter>
+    </ClInclude>
+    <ClInclude Include="HighResolutionTimer.h">
+      <Filter>源文件和头文件\公共的类\HighResolutionTimer</Filter>
+    </ClInclude>
+    <ClInclude Include="tinyxml2\tinyxml2.h">
+      <Filter>源文件和头文件\公共的类\tinyxml2</Filter>
+    </ClInclude>
+    <ClInclude Include="TaskbarItemOrderHelper.h">
+      <Filter>源文件和头文件\公共的类\TaskbarItemOrderHelper</Filter>
+    </ClInclude>
+    <ClInclude Include="SetItemOrderDlg.h">
+      <Filter>源文件和头文件\对话框类\选项设置对话框\SetItemOrderDlg</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\PluginInterface.h">
+      <Filter>源文件和头文件\头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="PluginManager.h">
+      <Filter>源文件和头文件\公共的类\PluginManager</Filter>
+    </ClInclude>
+    <ClInclude Include="PluginManagerDlg.h">
+      <Filter>源文件和头文件\对话框类\PluginManagerDlg</Filter>
+    </ClInclude>
+    <ClInclude Include="PluginInfoDlg.h">
+      <Filter>源文件和头文件\对话框类\PluginManagerDlg</Filter>
+    </ClInclude>
+    <ClInclude Include="CommonData.h">
+      <Filter>源文件和头文件\公共的类\CommonData</Filter>
+    </ClInclude>
+    <ClInclude Include="AppAlreadyRuningDlg.h">
+      <Filter>源文件和头文件\对话框类\AppAlreadyRuningDlg</Filter>
+    </ClInclude>
+    <ClInclude Include="SelectConnectionsDlg.h">
+      <Filter>源文件和头文件\对话框类\选项设置对话框\SelectConnectionsDlg</Filter>
+    </ClInclude>
+    <ClInclude Include="WindowsSettingHelper.h">
+      <Filter>源文件和头文件\公共的类\WindowsSettingHelper</Filter>
+    </ClInclude>
+    <ClInclude Include="DllFunctions.h">
+      <Filter>源文件和头文件\公共的类\DllFunctions</Filter>
+    </ClInclude>
+    <ClInclude Include="D2D1Support.h">
+      <Filter>源文件和头文件\公共的类\RenderAPISupport\D2D1Support</Filter>
+    </ClInclude>
+    <ClInclude Include="Nullable.hpp">
+      <Filter>源文件和头文件\公共的类\Nullable</Filter>
+    </ClInclude>
+    <ClInclude Include="DrawTextManager.h">
+      <Filter>源文件和头文件\公共的类\DrawTextManager</Filter>
+    </ClInclude>
+    <ClInclude Include="HResultException.h">
+      <Filter>源文件和头文件\公共的类\HResultException</Filter>
+    </ClInclude>
+    <ClInclude Include="D3D10Support1.h">
+      <Filter>源文件和头文件\公共的类\RenderAPISupport\D3D10Support1</Filter>
+    </ClInclude>
+    <ClInclude Include="Image2DEffect.h">
+      <Filter>源文件和头文件\公共的类\Image2DEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="IDrawCommon.h">
+      <Filter>源文件和头文件\公共的类\DrawCommon</Filter>
+    </ClInclude>
+    <ClInclude Include="DrawCommonFactory.h">
+      <Filter>源文件和头文件\公共的类\DrawCommon</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderAPISupport.h">
+      <Filter>源文件和头文件\公共的类\RenderAPISupport</Filter>
+    </ClInclude>
+    <ClInclude Include="DCompositionSupport.h">
+      <Filter>源文件和头文件\公共的类\RenderAPISupport\DCompositionSupport</Filter>
+    </ClInclude>
+    <ClInclude Include="Dxgi1Support2.h">
+      <Filter>源文件和头文件\公共的类\RenderAPISupport\DxgiSupport2</Filter>
+    </ClInclude>
+    <ClInclude Include="TaskBarDlgDrawCommon.h">
+      <Filter>源文件和头文件\公共的类\DrawCommon</Filter>
+    </ClInclude>
+    <ClInclude Include="SupportedRenderEnums.h">
+      <Filter>源文件和头文件\公共的类\DrawCommon</Filter>
+    </ClInclude>
+    <ClInclude Include="WindowsWebExperienceDetector.h">
+      <Filter>源文件和头文件\公共的类\WindowsWebExperienceDetector</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -513,6 +657,72 @@
     <ClCompile Include="ComboBox2.cpp">
       <Filter>源文件和头文件\派生的控件类\CComboBox2</Filter>
     </ClCompile>
+    <ClCompile Include="tinyxml2\tinyxml2.cpp">
+      <Filter>源文件和头文件\公共的类\tinyxml2</Filter>
+    </ClCompile>
+    <ClCompile Include="TaskbarItemOrderHelper.cpp">
+      <Filter>源文件和头文件\公共的类\TaskbarItemOrderHelper</Filter>
+    </ClCompile>
+    <ClCompile Include="SetItemOrderDlg.cpp">
+      <Filter>源文件和头文件\对话框类\选项设置对话框\SetItemOrderDlg</Filter>
+    </ClCompile>
+    <ClCompile Include="PluginManager.cpp">
+      <Filter>源文件和头文件\公共的类\PluginManager</Filter>
+    </ClCompile>
+    <ClCompile Include="PluginManagerDlg.cpp">
+      <Filter>源文件和头文件\对话框类\PluginManagerDlg</Filter>
+    </ClCompile>
+    <ClCompile Include="PluginInfoDlg.cpp">
+      <Filter>源文件和头文件\对话框类\PluginManagerDlg</Filter>
+    </ClCompile>
+    <ClCompile Include="CommonData.cpp">
+      <Filter>源文件和头文件\公共的类\CommonData</Filter>
+    </ClCompile>
+    <ClCompile Include="AppAlreadyRuningDlg.cpp">
+      <Filter>源文件和头文件\对话框类\AppAlreadyRuningDlg</Filter>
+    </ClCompile>
+    <ClCompile Include="SelectConnectionsDlg.cpp">
+      <Filter>源文件和头文件\对话框类\选项设置对话框\SelectConnectionsDlg</Filter>
+    </ClCompile>
+    <ClCompile Include="WindowsSettingHelper.cpp">
+      <Filter>源文件和头文件\公共的类\WindowsSettingHelper</Filter>
+    </ClCompile>
+    <ClCompile Include="DllFunctions.cpp">
+      <Filter>源文件和头文件\公共的类\DllFunctions</Filter>
+    </ClCompile>
+    <ClCompile Include="D2D1Support.cpp">
+      <Filter>源文件和头文件\公共的类\RenderAPISupport\D2D1Support</Filter>
+    </ClCompile>
+    <ClCompile Include="DrawTextManager.cpp">
+      <Filter>源文件和头文件\公共的类\DrawTextManager</Filter>
+    </ClCompile>
+    <ClCompile Include="HResultException.cpp">
+      <Filter>源文件和头文件\公共的类\HResultException</Filter>
+    </ClCompile>
+    <ClCompile Include="D3D10Support1.cpp">
+      <Filter>源文件和头文件\公共的类\RenderAPISupport\D3D10Support1</Filter>
+    </ClCompile>
+    <ClCompile Include="Image2DEffect.cpp">
+      <Filter>源文件和头文件\公共的类\Image2DEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="DrawCommonFactory.cpp">
+      <Filter>源文件和头文件\公共的类\DrawCommon</Filter>
+    </ClCompile>
+    <ClCompile Include="DCompositionSupport.cpp">
+      <Filter>源文件和头文件\公共的类\RenderAPISupport\DCompositionSupport</Filter>
+    </ClCompile>
+    <ClCompile Include="Dxgi1Support2.cpp">
+      <Filter>源文件和头文件\公共的类\RenderAPISupport\DxgiSupport2</Filter>
+    </ClCompile>
+    <ClCompile Include="TaskBarDlgDrawCommon.cpp">
+      <Filter>源文件和头文件\公共的类\DrawCommon</Filter>
+    </ClCompile>
+    <ClCompile Include="SupportedRenderEnums.cpp">
+      <Filter>源文件和头文件\公共的类\DrawCommon</Filter>
+    </ClCompile>
+    <ClCompile Include="WindowsWebExperienceDetector.cpp">
+      <Filter>源文件和头文件\公共的类\WindowsWebExperienceDetector</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="TrafficMonitor.rc">
@@ -618,6 +828,12 @@
       <Filter>资源文件</Filter>
     </Image>
     <Image Include="res\notifyicon5.ico">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="res\menu_icon\plugins.ico">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="res\menu_icon\task_manager.ico">
       <Filter>资源文件</Filter>
     </Image>
   </ItemGroup>
