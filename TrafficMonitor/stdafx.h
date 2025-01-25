@@ -50,7 +50,7 @@ using std::ofstream;
 #include<io.h>
 #include<algorithm>
 #include <cmath>
-#include <afxinet.h>	//用于支持使用网络相关的类
+#include <afxinet.h>    //用于支持使用网络相关的类
 #include <afxwin.h>
 
 
@@ -67,31 +67,39 @@ using std::ofstream;
 
 #define MY_WM_NOTIFYICON (WM_USER+1005)
 #define WM_TASKBAR_WND_CLOSED (WM_USER+1006)        //任务栏窗口关闭时发送此消息
+#define WM_MONITOR_INFO_UPDATED (WM_USER+1007)        //监控信息已更新
+#define WM_REOPEN_TASKBAR_WND (WM_USER+1008)        //重新打开任务栏窗口
+#define WM_SETTINGS_APPLIED (WM_USER+1009)          //在选项设置中点击了“应用”按钮
 
-#define WM_NEXT_USER_MSG (WM_USER+1007)
+#define WM_NEXT_USER_MSG (WM_USER+1010)
 
 //#define CONFIG_PATH _T(".\\config.ini")
 //#define CONFIG_PATHA ".\\config.ini"
 //#define LOG_PATH _T(".\\error.log")
 //#define HISTORY_TRAFFIC_PATH _T(".\\history_traffic.dat")
-#define MAX_RESTART_CNT 10		//最大重新初始化次数
+#define MAX_RESTART_CNT 10      //最大重新初始化次数
 
-#define MAIN_TIMER 1234			//主定时器的ID
-#define DELAY_TIMER 1235		//延时定时器ID
+#define MAIN_TIMER 1234         //主定时器的ID
+#define DELAY_TIMER 1235        //延时定时器ID
 #define TASKBAR_TIMER 1236
 #define CONNECTION_DETAIL_TIMER 1237
 #define MONITOR_TIMER 1238
+#define DELETE_NOTIFY_ICON_TIMER 1239   //删除通知区图标的定时器
 
-#define MAX_INSERT_TO_TASKBAR_CNT 5		//尝试嵌入任务栏的最大次数
+#define MAX_INSERT_TO_TASKBAR_CNT 200     //尝试嵌入任务栏的最大次数
+#define WARN_INSERT_TO_TASKBAR_CNT 20     //尝试嵌入任务栏的警告次数
 
-#define VERSION L"1.79.1"
-#define COMPILE_DATE L"2020/08/05"
+#define APP_NAME _T("TrafficMonitor")
+#define APP_CLASS_NAME _T("TrafficMonitor_r7XZaS4p") //程序主窗口的类名
+#define VERSION L"1.85"
 
-#define MAX_NOTIFY_ICON 6		//可选的通知区图标数量
+#define MAX_NOTIFY_ICON 6       //可选的通知区图标数量
 
 //背景图片的文件名
 #define BACKGROUND_IMAGE_S L"\\background.bmp"
 #define BACKGROUND_IMAGE_L L"\\background_l.bmp"
+#define BACKGROUND_IMAGE_S_PNG L"background.png"
+#define BACKGROUND_IMAGE_L_PNG L"background_l.png"
 #define BACKGROUND_MASK_S L"\\background_mask.bmp"
 #define BACKGROUND_MASK_L L"\\background_mask_l.bmp"
 
